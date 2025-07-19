@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Jupyter & VSCode
+.ipynb_checkpoints/
+.vscode/
+
+# Environment
+.env
+*.env
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Hugging Face cache
+~/.cache/huggingface
+~/.huggingface/
+huggingface_token.txt
+
+# Local models (if any)
+models/
+checkpoints/
+*.safetensors
+*.bin
+
+# Node & JS (if using npm in frontend)
+node_modules/
+*.log
+
+# Flask instance folder (if created)
+instance/
