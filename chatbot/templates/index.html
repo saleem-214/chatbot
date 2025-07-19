@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TinyLlama Chatbot</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <header>
+        <button class="toggle-history" onclick="toggleHistory()">History</button>
+        <h1>🧠 TinyLlama Chatbot </h1> 
+    </header>
+
+    <div class="main-container">
+        <div class="sidebar hidden" id="sidebar">
+            <h3>Chat History</h3>
+            <ul id="chat-history"></ul>
+        </div>
+
+        <div class="chat-container" id="chat-container">
+            <div id="chat-box">
+                <p>Hello there. How can I help you?</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="input-area">
+        <input type="text" id="user-input" placeholder="Type your message...">
+        <button class="send" id="send" onclick="sendMessage()">Send</button>
+        <button onclick="exitChat()" class="exit-btn">Exit</button>
+    </div>
+
+    <script>
+    function toggleHistory() {
+        const sidebar = document.getElementById("sidebar");
+        const chatContainer = document.getElementById("chat-container");
+
+        sidebar.classList.toggle("hidden");
+        chatContainer.classList.toggle("shrinked");
+    }
+
+    function sendMessage() {
+    const inputField = document.getElementById("user-input");
+    const message = inputField.value.trim();
+    if (!message) return;
+
+    const chatBox = document.getElementById("chat-box");
+
+    // 1. Show User Input
+    const userMsg = document.createElement("p");
+    userMsg.innerHTML = `<strong>You:</strong> ${message}`;
+    chatBox.appendChild(userMsg);
+
+    // 2. Show "Bot is thinking..."
+    const botThinking = document.createElement("p");
+    botThinking.innerHTML = `<strong>Bot:</strong> ⏳ Bot is thinking...`;
+    chatBox.appendChild(botThinking);
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    // 3. Make request
+    fetch("/chat", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ message: message })
+    })
+    .then(res => res.json())
+    .then(data => {
+        // 4. Replace thinking with real bot response
+        const formattedBot = document.createElement("pre");
+        formattedBot.innerHTML = `<strong>Bot:</strong>\n${data.response}`;
+        chatBox.replaceChild(formattedBot, botThinking);
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+        // 5. Update history
+        const historyList = document.getElementById("chat-history");
+        historyList.innerHTML = "";
+        data.history.forEach((entry, index) => {
+            const li = document.createElement("li");
+            li.textContent = entry.user.length > 30 ? entry.user.slice(0, 30) + "..." : entry.user;
+            li.onclick = () => displayHistoryEntry(data.history[index]);
+            historyList.appendChild(li);
+        });
+
+        if (data.exit) {
+            inputField.disabled = true;
+        } else {
+            inputField.value = "";
+        }
+    });
+}
+
+
+    function displayHistoryEntry(entry) {
+        const chatBox = document.getElementById("chat-box");
+        chatBox.innerHTML = `
+            <p><strong>You:</strong> ${entry.user}</p>
+            <p><strong>Bot:</strong><br><pre>${entry.bot}</pre></p>
+        `;
+    }
+
+    function exitChat() {
+        fetch("/chat", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ message: "exit" })
+        }).then(res => res.json()).then(data => {
+            const chatBox = document.getElementById("chat-box");
+            chatBox.innerHTML += `<p><strong>Bot:</strong> ${data.response}</p>`;
+            document.getElementById("user-input").disabled = true;
+            document.getElementById("send").disabled = true;
+        });
+    }
+
+    // ✅ Optional: allow Enter key to submit message
+    document.addEventListener("DOMContentLoaded", function () {
+        const inputField = document.getElementById("user-input");
+        inputField.addEventListener("keydown", function (event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                sendMessage();
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
