@@ -6,13 +6,13 @@ A lightweight, privacy-friendly AI chatbot using the **TinyLlama-1.1B-Chat-v1.0*
 
 ## 📌 Features
 
-- 🧠 Locally loaded LLM (`TinyLlama-1.1B-Chat-v1.0`)
-- 🌐 Web UI with a ChatGPT-like interface
-- 📜 Chat history sidebar with persistent display
-- ⏳ “Bot is thinking…” placeholder for slow responses
-- ⚙️ Flask-based backend (production ready)
-- 🚀 Easy deployment on [Render](https://render.com) or local
-- ✅ No API key or external calls required — runs offline
+- 🧠 Runs locally with **TinyLlama-1.1B-Chat-v1.0**
+- 🌐 Web UI styled like ChatGPT
+- 📜 Persistent chat history sidebar
+- ⏳ “Bot is thinking…” loading indicator
+- ⚙️ Flask-powered backend (production-ready)
+- 🚀 Deployable on Render or run locally
+- ✅ No API key or internet required after model is downloaded
 
 ---
 
@@ -20,19 +20,21 @@ A lightweight, privacy-friendly AI chatbot using the **TinyLlama-1.1B-Chat-v1.0*
 
 chatbot/
 │
-├── app.py # Flask backend & model logic
+├── app.py # Flask backend with model loading
 ├── requirements.txt # Python dependencies
-├── Procfile # For Render deployment
-├── .gitignore # Git ignore rules
+├── Procfile # Render deployment instructions
+├── .gitignore # Files to ignore in Git
 │
 ├── templates/
-│ └── index.html # Frontend layout
+│ └── index.html # Frontend UI (HTML)
 │
-├── static/
-│ ├── style.css # Custom styling
-│ └── script.js # JavaScript logic
+└── static/
+├── style.css # Custom styling
+└── script.js # JavaScript chat logic
 
----
+yaml
+Copy
+Edit
 
 ---
 
@@ -40,35 +42,44 @@ chatbot/
 
 - Python 3.9 or above
 - pip
-- 8GB RAM or more (for TinyLlama on CPU)
+- 8GB RAM or more (recommended for running TinyLlama on CPU)
 
 ---
 
-## ⚙️ Installation & Running Locally
+## ⚙️ Local Setup Instructions
 
-### 1. Clone the Repository
+### 🔹 1. Clone the Repository
 
-```bash(open the command prompt and run this command for project installation and setup)
-git clone https://github.com/yourusername/tinyllama-flask-chatbot.git
+Open your terminal or command prompt and run:
+
+```bash
+git clone https://github.com/saleem-214/chatbot.git
 cd tinyllama-flask-chatbot
+🔹 2. Install Dependencies
+Install all required packages using:
 
-### 2.Install Dependencies
-```bash  "runn this command  to install all necessary pakages"
--pip install -r requirements.txt
--you must install the following dependencies:
- flask
- torch
- transformers
- sentencepiece
+bash
+Copy
+Edit
+pip install -r requirements.txt
+Or manually install each package:
 
--you can also download the requirements manually:
-  pip install flask transformers torch sentencepiece
+bash
+Copy
+Edit
+pip install flask transformers torch sentencepiece
+🔹 3. Run the App
+Start the Flask server by running:
 
+bash
+Copy
+Edit
+python app.py
+The model will automatically download the first time and load into memory.
 
+Once loaded, your browser should open automatically at:
 
-### 3.RUn The App
--python app.py
-  First run this app.py in command prompt within the directory path using the command "python app.py" so that it will download the tinyLlama  model and loads.
--Your browser will open automatically at:
-   http://127.0.0.1:5000
-
+cpp
+Copy
+Edit
+http://127.0.0.1:5000
