@@ -32,10 +32,6 @@ chatbot/
 ├── style.css # Custom styling
 └── script.js # JavaScript chat logic
 
-yaml
-Copy
-Edit
-
 ---
 
 ## 📦 Requirements
@@ -55,31 +51,16 @@ Open your terminal or command prompt and run:
 ```bash
 git clone https://github.com/saleem-214/chatbot.git
 cd tinyllama-flask-chatbot
+
 🔹 2. Install Dependencies
 Install all required packages using:
-
-bash
-Copy
-Edit
-pip install -r requirements.txt
+-pip install -r requirements.txt
 Or manually install each package:
+-pip install flask transformers torch sentencepiece
 
-bash
-Copy
-Edit
-pip install flask transformers torch sentencepiece
 🔹 3. Run the App
 Start the Flask server by running:
-
-bash
-Copy
-Edit
-python app.py
+-python app.py
 The model will automatically download the first time and load into memory.
-
 Once loaded, your browser should open automatically at:
-
-cpp
-Copy
-Edit
-http://127.0.0.1:5000
+-http://127.0.0.1:5000
